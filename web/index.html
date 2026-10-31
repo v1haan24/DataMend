@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DataMend</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><span class="mark"></span>DataMend</div>
+    <nav>
+      <button class="active" data-go="home">Home</button>
+      <button data-go="recovery">Recovery</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Home / Compression -->
+    <section id="home" class="screen">
+      <div class="hero">
+        <h1>Your files, backed up smarter.</h1>
+        <p>Compress any number of files with Huffman coding, split each into four blocks and protect it with its own XOR parity block.</p>
+      </div>
+
+      <div id="drop" class="drop" tabindex="0">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+        <p>Drag and drop files or folders here</p>
+        <button class="btn ghost" id="browse" type="button">Browse Files</button>
+        <input id="picker" type="file" multiple hidden>
+      </div>
+
+      <div id="selection" hidden>
+        <div class="listhead"><span id="selCount"></span><span id="selTotal"></span></div>
+        <ul id="fileList" class="flist"></ul>
+      </div>
+
+      <div class="actions"><button class="btn primary" id="compress" disabled>Compress &amp; Create Backup</button></div>
+      <p id="homeError" class="error" hidden></p>
+
+      <div id="result" class="panel" hidden>
+        <p id="rHead" class="rhead"></p>
+        <div class="stats">
+          <div><span>Original size</span><b id="rOrig"></b></div>
+          <div><span>Compressed</span><b id="rComp"></b></div>
+          <div><span>Final backup size</span><b id="rBackup"></b></div>
+          <div><span>Huffman savings</span><b id="rSaved" class="accent"></b></div>
+        </div>
+        <p class="hint" id="rHint"></p>
+        <div class="actions left">
+          <button class="btn primary" id="dlBackup">Download Backup</button>
+          <button class="btn ghost" data-go="recovery">Open Recovery</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recovery -->
+    <section id="recovery" class="screen" hidden>
+      <div class="hero">
+        <h1>Recovery</h1>
+        <p>Open a backup, pick a file, simulate losing one block and rebuild it from the parity block.</p>
+      </div>
+
+      <div id="openBar" class="openbar">
+        <span id="archInfo">No archive loaded</span>
+        <button class="btn ghost" id="openArchive">Open .dmb Archive</button>
+        <input id="archPicker" type="file" accept=".dmb" hidden>
+      </div>
+      <p id="archError" class="error" hidden></p>
+
+      <div id="empty" class="panel emptybox" hidden>
+        <p>No backup loaded. Open a .dmb archive, or create one on the Home screen.</p>
+        <button class="btn ghost" data-go="home">Go to Home</button>
+      </div>
+
+      <div id="recBody" hidden>
+        <ul id="rfiles" class="flist pick"></ul>
+        <div class="actions left"><button class="btn primary" id="downloadAll">Download All Files</button></div>
+        <p id="allNote" class="note left"></p>
+
+        <div class="detail">
+          <p class="detailname" id="detailName"></p>
+          <div id="blocks" class="blocks"></div>
+          <div id="parity" class="card parity">
+            <span class="row"><b>Parity block</b><i class="dot"></i></span>
+            <span class="size" id="pSize"></span>
+            <span class="state">P = B1 &oplus; B2 &oplus; B3 &oplus; B4</span>
+          </div>
+
+          <div class="actions">
+            <button class="btn ghost" id="simulate" disabled>Simulate Data Loss</button>
+            <button class="btn primary" id="recover" disabled>Recover Missing Block</button>
+          </div>
+          <p id="note" class="note">Select a data block to begin.</p>
+          <div class="actions"><button class="btn ghost" id="download">Download Restored File</button></div>
+          <p class="hint center">Each file has its own parity block, so one lost block per file can be rebuilt. If two blocks of the same file are lost, that file cannot be recovered.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
